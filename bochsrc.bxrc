@@ -1,0 +1,24 @@
+megs: 32
+
+romimage: file=$BXSHARE/BIOS-bochs-latest
+vgaromimage: file=$BXSHARE/VGABIOS-lgpl-latest
+
+floppya: 1_44=dsk/x86/boot.img, status=inserted
+
+boot: a
+
+mouse: enabled=0
+
+clock: sync=slowdown
+
+cpu: count=1
+
+log: log/bochs.log
+
+panic: action=ask
+error: action=report
+info: action=report
+debug: action=ignore
+
+com1: enabled=1, mode=file, dev=log/serial.log
+
