@@ -8,7 +8,7 @@ Last Updated: November 7, 2026
 Valsex uses the Conventional Commits specification.
 The format for submitting information is (EBNF):
 
-`<type>["("<scope>[{", "<other-scope>}]")"]":" <description>
+`<type>["("<scope>[{", "<other-scope>}]")"]["!"]":" <description>
 ["\n\n"<body>]["\n\n"(("BREAK CHANGING: " <break-msg>) |
 <footer> | ("BREAK CHANGING: " <break-msg>) "\n" <footer>))]`
 
