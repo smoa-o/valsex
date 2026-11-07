@@ -4,4 +4,5 @@ Q: Why haven't I seen any release?
 A: Because our project requires the master to only have code
    in the document development branch, please go to the development
    branch to view each release.
-   You can also search for the corresponding branch `release/...` by querying it.
+   You can also search for the corresponding branch `release/...`
+   by querying it.
