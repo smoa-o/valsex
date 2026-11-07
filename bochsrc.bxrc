@@ -1,3 +1,5 @@
+# DEPRECATED
+
 megs: 32
 
 romimage: file=$BXSHARE/BIOS-bochs-latest

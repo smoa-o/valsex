@@ -3,7 +3,8 @@ DSK_DIR ?= dsk
 ARCH_DIR ?= arch
 ARCH ?= x86
 LOG_DIR ?= log
-NASMFLAGS ?= -w+all -w+error -w-reloc-abs-word -w-reloc-abs-qword
+NASMFLAGS ?= -w+all -w+error -w-error=reloc-abs-word -w-error=reloc-abs-qword \
+	-w-error=reloc-abs-dword
 
 BOOT_DIR ?= boot
 
@@ -27,12 +28,15 @@ clean:
 reset: clean
 	mkdir -p $(foreach item,$(AUTOGEN_ARCH),$(item)/boot/)
 	dd if=/dev/null of=$(call Arch,$(DSK_DIR))/boot.img bs=512 count=2880
+	dd if=/dev/zero of=$(call Arch,$(DSK_DIR))/krnl.img bs=1M count=64
 
 compile: reset
 	nasm $(NASMFLAGS) -f bin $(call Arch,$(ARCH_DIR))/$(BOOT_DIR)/mbr.asm -o $(call Arch,$(BIN_DIR))/$(BOOT_DIR)/mbr.bin
 	nasm $(NASMFLAGS) -f bin $(call Arch,$(ARCH_DIR))/$(BOOT_DIR)/tpm.asm -o $(call Arch,$(BIN_DIR))/$(BOOT_DIR)/tpm.bin
+	nasm $(NASMFLAGS) -f bin $(call Arch,$(ARCH_DIR))/$(BOOT_DIR)/tlm.asm -o $(call Arch,$(BIN_DIR))/$(BOOT_DIR)/tlm.bin
 	dd if=$(call Arch,$(BIN_DIR))/$(BOOT_DIR)/mbr.bin of=$(call Arch,$(DSK_DIR))/boot.img bs=512 conv=notrunc
 	dd if=$(call Arch,$(BIN_DIR))/$(BOOT_DIR)/tpm.bin of=$(call Arch,$(DSK_DIR))/boot.img bs=512 seek=1 conv=notrunc
+	dd if=$(call Arch,$(BIN_DIR))/$(BOOT_DIR)/tlm.bin of=$(call Arch,$(DSK_DIR))/krnl.img bs=512 conv=notrunc
 
 run:
 ifdef DESTR
@@ -42,6 +46,7 @@ else
 endif
 
 qemu:
-	qemu-system-x86_64 -fda dsk/x86/boot.img -m 32M -serial none -nographic $(OPT)
+	qemu-system-x86_64 -fda $(call Arch,$(DSK_DIR))/boot.img \
+		-hda $(call Arch,$(DSK_DIR))/krnl.img -m 32M -serial none -nographic $(OPT)
 
 .PHONY: clean reset

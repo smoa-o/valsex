@@ -5,7 +5,7 @@ mmain:
 	; stay n bit: or var, (1 << n)
 
 	; 0x7000 (bit 7~0)
-	; ... LGDT A20 PE PMPASS RMPASS FIN
+	; PGRDY PMATA LGDT A20 PE PMPASS RMPASS FIN
 
 	;mov byte [0x7000], 3
 	
