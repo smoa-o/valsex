@@ -1,0 +1,35 @@
+The Rule of Commit Message
+
+Author: SeaMc <sauthm_2015@qq.com>
+Last Updated: November 7, 2026
+
+==========================
+
+Valsex uses the Conventional Commits specification.
+The format for submitting information is (EBNF):
+
+`<type>["("<scope>[{", "<other-scope>}]")"]":" <description>
+["\n\n"<body>]["\n\n"(("BREAK CHANGING: " <break-msg>) |
+<footer> | ("BREAK CHANGING: " <break-msg>) "\n" <footer>))]`
+
+e.g. `
+docs(chf)!: refactor the Readme and add docs/process/issues
+
+BREAK CHANGING: Refactor the Readme
+Close #120845
+`
+
+Scope Rule of Documentation Branch
+----------------------------------
+
+* chf: Community Health Files
+* doc: Documentation Files (means `docs/`)
+
+Scope Rule of Source Branch
+---------------------------
+
+* arch: Architecture Modified
+-  Supporting a new archotecture;
+-  Stop maintaining an architectures.
+
+* make: Makefile Modified

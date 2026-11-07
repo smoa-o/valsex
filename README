@@ -1,17 +1,21 @@
-1. Q & A
+Valsex OS
+=========
 
-Q: Why haven't I seen any release?
-A: Because our project requires the master to only have code
-   in the document development branch, please go to the develop
-   branch to view each release.
-   You can also search for the corresponding branch `release/...`
-   by querying it.
+Valsex is an operating system. It manages hardware,
+system resources, and provides the fundamental services
+for all other software.
 
-   e.g. branch: release/v0.0.1-pre+1
-        tag(in develop branch): v0.0.1-pre+1
+Quick Start
+-----------
 
-Q: How to determine the integrity of the current project?
-A: You can try to do it on the release branch that `make`
-   to verify the integrity.
-   You can still operate on the developing branch, but
-   there is a risk involved.
+* Submit a PR: See docs/process/submit-pr
+* Get the release's sources:
+-  See https://gitee.com/smoa-new/valsex/releases
+* Build the sources: See docs/users/building
+* Join the community: See docs/contri/join
+* Q and A About Contributing: See docs/contri/q-and-a
+
+Communication
+-------------
+* QQ Group: 183241333
+* Administrator Mail: sauthm_2015@qq.com

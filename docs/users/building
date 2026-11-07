@@ -1,0 +1,18 @@
+Building a Release
+
+Author: SeaMc <sauthm_2015@qq.com>
+Last Updated: November 7, 2026
+
+=================
+
+! Before you build, please run the command
+`make self-test` to ensure there are no defects
+or damages
+
+Building
+--------
+
+* Running `make compile` to compile Valsex.
+* Running `make run` to running Valsex.
+
+You also can run `make clean` to clean distributions.

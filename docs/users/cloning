@@ -1,0 +1,16 @@
+Cloning this source
+
+Author: SeaMc <sauthm_2015@qq.com>
+Last Updated: November 7, 2026
+
+===================
+
+When you need to download the project repository locally
+(i.e. clone), it can be achieved through cloning.
+
+You can clone the repository locally by executing commands
+through the local command line:
+`git clone https://gitee.com/smoa-new/valsex.git`
+
+Or use mirrors:
+`git clone https://github.com/smoa-o/valsex.git`

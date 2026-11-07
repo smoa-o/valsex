@@ -1,0 +1,10 @@
+Architecture Diagram
+
+Author: SeaMc <sauthm_2015@qq.com>
+Last Updated: November 7, 2026
+
+====================
+
+* BIOS => MBR - Master Boot Record
+-  Set MBR Flags;
+-  Halt.
