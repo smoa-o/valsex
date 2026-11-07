@@ -14,7 +14,7 @@ AUTOGEN_DIRS ?= $(BIN_DIR) $(DSK_DIR) $(LOG_DIR)
 AUTOGEN_ARCH ?= $(foreach item,$(AUTOGEN_DIRS),$(call Arch,$(item)))
 
 OPT ?=
-DESTR ?= bash -c
+# DESTR ?
 
 
 all: compile run
@@ -32,8 +32,13 @@ compile: reset
 	dd if=$(call Arch,$(BIN_DIR))/$(BOOT_DIR)/mbr.bin of=$(call Arch,$(DSK_DIR))/boot.img bs=512 conv=notrunc
 
 run:
-	$(DESTR) bochs $(OPT) -f bochsrc.bxrc
+ifdef DESTR
+	$(DESTR) bochs $(OPT) -q -f bochsrc.bxrc
+else
+	bochs $(OPT) -q -f bochsrc.bxrc
+endif
 
+qemu:
+	qemu-system-x86_64 -fda dsk/x86/boot.img -m 32M -serial none -nographic $(OPT)
 
 .PHONY: clean reset
-

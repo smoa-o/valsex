@@ -14,11 +14,12 @@ clock: sync=slowdown
 cpu: count=1
 
 log: log/bochs.log
+debugger: log=log/debugger.log
 
 panic: action=ask
 error: action=report
 info: action=report
 debug: action=ignore
 
-com1: enabled=1, mode=file, dev=log/serial.log
-
+com1: enabled=0
+display_library: dummy
