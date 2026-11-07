@@ -3,6 +3,7 @@ DSK_DIR ?= dsk
 ARCH_DIR ?= arch
 ARCH ?= x86
 LOG_DIR ?= log
+NASMFLAGS ?= -w+all -w+error -w-reloc-abs-word -w-reloc-abs-qword
 
 BOOT_DIR ?= boot
 
@@ -28,8 +29,10 @@ reset: clean
 	dd if=/dev/null of=$(call Arch,$(DSK_DIR))/boot.img bs=512 count=2880
 
 compile: reset
-	nasm -w+all -w+error -f bin $(call Arch,$(ARCH_DIR))/$(BOOT_DIR)/mbr.asm -o $(call Arch,$(BIN_DIR))/$(BOOT_DIR)/mbr.bin
+	nasm $(NASMFLAGS) -f bin $(call Arch,$(ARCH_DIR))/$(BOOT_DIR)/mbr.asm -o $(call Arch,$(BIN_DIR))/$(BOOT_DIR)/mbr.bin
+	nasm $(NASMFLAGS) -f bin $(call Arch,$(ARCH_DIR))/$(BOOT_DIR)/tpm.asm -o $(call Arch,$(BIN_DIR))/$(BOOT_DIR)/tpm.bin
 	dd if=$(call Arch,$(BIN_DIR))/$(BOOT_DIR)/mbr.bin of=$(call Arch,$(DSK_DIR))/boot.img bs=512 conv=notrunc
+	dd if=$(call Arch,$(BIN_DIR))/$(BOOT_DIR)/tpm.bin of=$(call Arch,$(DSK_DIR))/boot.img bs=512 seek=1 conv=notrunc
 
 run:
 ifdef DESTR
