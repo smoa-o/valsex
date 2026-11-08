@@ -1,5 +1,7 @@
 org 0x7c00
 
+default abs
+
 mmain:
 	; clear n bit: and var, ~(1 << n)
 	; stay n bit: or var, (1 << n)

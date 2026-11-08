@@ -2,7 +2,7 @@ org 0x7e00
 
 TLM equ 0x100000
 TLM_SECTOR equ 0x0        ; LBA 扇区号 = 0x10 (第16扇区)
-TLML equ 2          ; TLM 超过512字节，读2个扇区
+TLML equ 18         ; TLM 超过512字节，读2个扇区
 
 default abs
 
@@ -102,7 +102,11 @@ pm:
 
 .done:
     or byte [0x7000], (1 << 6)
-    jmp 0x08:TLM
+    ; 32-bit far jump to TLM @ 0x100000 (was 16-bit, offset truncated to 0)
+    ;db 0xEA
+    ;dd 0x00100000
+    ;dw 0x0008
+    jmp 0x08:0x100000
 
 .err:
     or byte [0x7000], (1 << 0)

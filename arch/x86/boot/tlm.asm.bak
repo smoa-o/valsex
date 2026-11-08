@@ -1,0 +1,113 @@
+bits 32
+org 0x100000
+
+OSDAT equ 0x110000
+
+default abs
+
+jmp tlm
+
+; exstatus (bit 7~0)
+; ... LCR3 PAE LME PG FJMP LMPASS
+
+status:   db 0
+exstatus: db 0
+
+%include "rdata.asm"
+
+bits 32
+
+tlm_start:
+
+tlm:
+    cli
+
+    mov ax, 0x10
+    mov ds, ax
+    mov es, ax
+    
+    mov edi, 0x210000
+    xor eax, eax
+    mov ecx, (3 * 4096) / 4
+    rep stosd
+    
+    mov dword [0x210000 + 0 * 8], 0x211001
+    mov dword [0x210000 + 0 * 8 + 4], 0
+    
+    mov dword [0x211000 + 0x80 * 8], 0xF0100083
+    mov dword [0x211000 + 0x80 * 8 + 4], 0
+    
+    mov dword [0x211000 + 0x180 * 8], 0x300083
+    mov dword [0x211000 + 0x180 * 8 + 4], 0
+    mov dword [0x211000 + 0x280 * 8], 0x500083
+    mov dword [0x211000 + 0x280 * 8 + 4], 0
+
+    ; Map low 1GB (0x00000000) as 1GB page so code/data at 0x100000 stays accessible after PG=1
+    mov dword [0x211000 + 0 * 8], 0x00000083
+    mov dword [0x211000 + 0 * 8 + 4], 0
+
+    or byte [0x7000], (1 << 7)
+
+    mov eax, 0x210000
+    mov cr3, eax
+    or byte [exstatus], (1 << 5)
+
+    mov eax, cr4
+    or eax, (1 << 5)
+    mov cr4, eax
+    or byte [exstatus], (1 << 4)
+
+    mov ecx, 0xc0000080
+    rdmsr
+    or eax, (1 << 8)
+    wrmsr
+    or byte [exstatus], (1 << 3)
+
+    mov eax, cr0
+    or eax, (1 << 31)
+    mov cr0, eax
+    or byte [exstatus], (1 << 2)
+
+    jmp 0x18:lm
+
+bits 64
+
+lm:
+    mov ax, 0x20
+    mov ds, ax
+    mov ss, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ss, ax
+    mov rsp, krnlstk
+
+    or byte [exstatus], (1 << 1)
+
+    or byte [exstatus], (1 << 0)
+    ; or byte [status],   (1 << 0)
+
+    ;cli
+    ;hlt
+    ;jmp $
+
+	mov qword [OSDAT], 0xaabbccdd ; Magic
+	mov qword [OSDAT+8], 4 ; Build
+	
+	mov eax, 0x80010120
+	mov dx, 0xcf8
+	out dx, eax
+	add dx, 4
+	in eax, dx
+	mov [OSDAT+16], eax; BMIBA
+
+	mov rax, 1
+	mov rcx, 1
+	mov edi, 0x120000
+	call ata_read
+
+	jmp 0x120000
+
+krnlstk_head:
+times 1024 dq 0
+krnlstk:
